@@ -20,7 +20,7 @@ domainUrl: 'http://blog.shenjinjin.com'
 baseUrl: ''
 
 # 吐个槽地址，会在chat页面中重定向到该地址
-tucaoUrl: QaQ
+#tucaoUrl: QaQ
 
 # 菜单
 menu:
