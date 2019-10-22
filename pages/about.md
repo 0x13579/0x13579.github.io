@@ -3,5 +3,4 @@ layout: mypost
 title: 关于我
 ---
 
-> Hello 陌生人，欢迎访问 TMaize Blog
-
+> 博客使用[TMaize](https://github.com/TMaize/tmaize-blog)模板
