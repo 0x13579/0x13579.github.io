@@ -1,11 +1,11 @@
 encoding: utf-8
 
 # SEO相关信息
-title: test Blog
+title: My Blog
 description: 
 keywords: 
 author: 
-footerText: ''
+footerText: 'Copyright © 2016 皖ICP备16016174号'
 
 # 这些不要动
 permalink: /posts/:year/:month/:day/:title.html
@@ -20,7 +20,7 @@ domainUrl: 'http://blog.shenjinjin.com'
 baseUrl: ''
 
 # 吐个槽地址，会在chat页面中重定向到该地址
-tucaoUrl: 
+tucaoUrl: QaQ
 
 # 菜单
 menu:
