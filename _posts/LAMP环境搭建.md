@@ -1,3 +1,9 @@
+---
+layout: mypost
+title: LAMP环境搭建
+categories: [环境搭建]
+---
+
 ## LAMP环境搭建
 
 #### 0x01 版本
