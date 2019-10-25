@@ -1,0 +1,121 @@
+## LAMP环境搭建
+
+#### 0x01 版本
+
+```
+CentOS Linux release 7.6.1810 (Core)
+Server version: Apache/2.4.6 (CentOS)
+mysql  Ver 15.1 Distrib 5.5.64-MariaDB, for Linux (x86_64) using readline 5.1
+PHP 5.4.16 (cli) (built: Oct 30 2018 19:30:51)
+```
+
+#### 0x02 安装前的准备
+
+```shell
+[root@localhost ~]# getenforce
+#关闭selinux
+[root@localhost ~]# sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config  
+[root@localhost ~]# getenforce
+Disabled
+[root@localhost ~]# systemctl stop firewalld && systemctl disable firewalld
+[root@localhost ~]# init 6
+```
+
+#### 0x03 环境搭建
+
+```shell
+[root@localhost ~]# yum -y install httpd httpd-devel
+[root@localhost ~]# yum -y install mariadb mariadb-server mariadb-libs mariadb-devel
+[root@localhost ~]# yum -y install php php-mysql php-gd php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-snmp php-soap curl curl-devel php-bcmath
+[root@localhost ~]# echo "<?phpinfo();?>" > /var/www/html/1.php
+[root@localhost ~]# mysql_secure_installation 
+[root@localhost ~]# systemctl start httpd && systemctl enable httpd
+[root@localhost ~]# systemctl start mariadb && systemctl enable mariadb
+```
+
+登录mysql：mysql -u root -p 
+
+网站路径 ：/var/www/html
+
+apache配置文件：/etc/httpd/conf
+
+#### 0x04 软waf安装
+
+LAMP环境下安装 安全狗和云锁 后期方便练习bypass。
+
+```shell
+[root@localhost ~]# yum -y install wget
+```
+
+##### 1、SafeDog
+
+官方安装教程：http://free.safedog.cn/install_desc_website.html
+
+```shell
+[root@localhost ~]# wget http://download.safedog.cn/safedog_linux64.tar.gz
+[root@localhost ~]# tar -zxvf safedog_linux64.tar.gz
+[root@localhost ~]# cd safedog_an_linux64_2.8.21207/
+[root@localhost safedog_an_linux64_2.8.21207]# chmod +x install.py
+------------------------安装时出的问题------------------------
+[root@localhost safedog_an_linux64_2.8.21207]# ./install.py
+Need system command 'locate' to install safedog for linux.
+Installation aborted!
+[root@localhost safedog_an_linux64_2.8.21207]# yum -y install mlocate
+[root@localhost safedog_an_linux64_2.8.21207]# ./install.py
+Need system command 'lsof' to install safedog for linux.
+Installation aborted!
+[root@localhost safedog_an_linux64_2.8.21207]# yum -y install lsof
+[root@localhost safedog_an_linux64_2.8.21207]# ./install.py
+Need system command 'netstat' to install safedog for linux.
+Installation aborted!
+[root@localhost safedog_an_linux64_2.8.21207]# yum -y install net-tools
+[root@localhost safedog_an_linux64_2.8.21207]# ./install.py
+Need system command 'killall' to install safedog for linux.
+Installation aborted!
+[root@localhost safedog_an_linux64_2.8.21207]# yum -y install psmisc
+
+--------------------我这里已经没有报错了有问题就百度--------------------
+------------------------开始安装Safedog的过程------------------------
+[root@localhost safedog_an_linux64_2.8.21207]# ./install.py
+extracting files ...
+
+Warning: Web defense module will restart web process during installation!!:
+Web defense module select:  1.apache 2.nginx . Input(Ctrl-C to skip web defense module installation): 1
+step 1/3, start install common lib                                                                [ok]
+step 2/3, start Install Server Defense Module
+  step 2.1, checking os release version...                                                        [ok]
+  step 2.2, installing file...                                                                    [ok]
+  step 2.3, start service...                                                                      [ok]
+  step 2.4, save safedog install info...
+  Tips:
+  (1)safedog install directory: /etc/safedog
+  (2)install safedog version: 2.8.21207
+install safedog completely
+
+step 3/3,  start install Apache Defense Module..
+  step 3.1, start install Apache Defend Module...
+  step 3.2, copy libraries                                                                        [ok]
+  step 3.3, copy bin                                                                              [ok]
+  step 3.4, Install apache defense module succeed..                                               [ok]
+  step 3.5, restart the apache server..send command to server ok.
+                                                           [ok]
+  Tips:
+  (1)If you want to change the configuration of apache defense module, please modify the files in /etc/safedog/apache/conf;
+  (2)If you want to check apache defense module log, please use command: sdalog;
+  (3)If apache defense module is failed to use, you can try to restart Apache service.
+Installation is complete
+```
+
+##### 2、YunSuo
+
+官方安装教程：
+
+http://help.yunsuo.com.cn/
+
+```shell
+[root@localhost ~]# wget https://download.yunsuo.com.cn/v3/yunsuo_agent_64bit.tar.gz && tar xvzf yunsuo_agent_64bit.tar.gz && chmod +x yunsuo_install/install && yunsuo_install/install
+```
+
+参考：
+
+https://www.cnblogs.com/me80/p/7218883.html
